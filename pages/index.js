@@ -1,11 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Home({ jobs }) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
+  const [localJobs, setLocalJobs] = useState([])
 
-  const filtered = jobs.filter(j => {
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const saved = JSON.parse(window.localStorage.getItem('postedJobs') || '[]')
+      if (Array.isArray(saved)) setLocalJobs(saved)
+    } catch (err) {
+      console.error('Failed to load local posted jobs', err)
+    }
+  }, [])
+
+  const jobsWithLocal = [
+    ...localJobs,
+    ...jobs.filter(job => !localJobs.some(local => local.title === job.title && local.company === job.company && local.location === job.location))
+  ]
+
+  const filtered = jobsWithLocal.filter(j => {
     const matchesQuery = [j.title, j.company, j.location, j.type].join(' ').toLowerCase().includes(query.toLowerCase())
     const matchesFilter = filter === 'all' ? true : j.type === filter
     return matchesQuery && matchesFilter
@@ -85,16 +101,16 @@ export default function Home({ jobs }) {
         .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 30px; }
         .header h1 { margin: 0; font-size: 3em; font-weight: 700; letter-spacing: -0.5px; }
         .subtitle { margin: 8px 0 0 0; font-size: 1.1em; opacity: 0.95; font-weight: 400; }
-        .btn-post { display: inline-block; background: #ff6b6b; color: white; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
-        .btn-post:hover { background: #ee5a52; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3); }
+        .btn-post { display: inline-block; background: #1f4b72; color: white; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.25s ease; white-space: nowrap; border: 1px solid rgba(255,255,255,0.18); }
+        .btn-post:hover { background: #163a5a; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(15, 38, 57, 0.25); }
         .container { max-width: 1200px; margin: -40px auto 0; padding: 0 20px; flex: 1; }
-        .controls { display: flex; gap: 12px; margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .controls { display: flex; gap: 12px; margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; border: 1px solid rgba(31, 75, 114, 0.12); box-shadow: 0 2px 12px rgba(15, 38, 57, 0.08); }
         .search-group { flex: 1; }
-        .search-input { width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: all 0.3s ease; }
-        .search-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
-        .filter-select { padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s ease; min-width: 140px; }
-        .filter-select:hover { border-color: #667eea; }
-        .filter-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .search-input { width: 100%; padding: 12px 16px; border: 1px solid #aac0d8; border-radius: 10px; font-size: 1em; transition: all 0.25s ease; }
+        .search-input:focus { outline: none; border-color: #1f4b72; box-shadow: 0 0 0 3px rgba(31, 75, 114, 0.12); }
+        .filter-select { padding: 12px 16px; border: 1px solid #aac0d8; border-radius: 10px; font-size: 1em; cursor: pointer; transition: all 0.25s ease; min-width: 140px; background: #f8fbff; }
+        .filter-select:hover { border-color: #1f4b72; }
+        .filter-select:focus { outline: none; border-color: #1f4b72; box-shadow: 0 0 0 3px rgba(31, 75, 114, 0.12); }
         .main-content { margin-bottom: 40px; }
         .results-count { color: #666; margin: 0 0 16px 0; font-size: 0.95em; font-weight: 500; }
         .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
