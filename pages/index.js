@@ -16,7 +16,7 @@ export default function Home({ jobs }) {
       <header className="header">
         <div className="header-content">
           <div>
-            <h1>ðŸš€ AI Job Board</h1>
+            <h1>{"\u{1F680}"} AI Job Board</h1>
             <p className="subtitle">Discover AI-powered opportunities</p>
           </div>
           <Link href="/post" className="btn-post">Post a Job</Link>
@@ -28,16 +28,16 @@ export default function Home({ jobs }) {
           <div className="search-group">
             <input 
               className="search-input" 
-              placeholder="ðŸ” Search by title, company, or location..." 
+              placeholder={"\u{1F50D} Search by title, company, or location..."} 
               value={query} 
               onChange={(e)=>setQuery(e.target.value)} 
             />
           </div>
           <select className="filter-select" value={filter} onChange={(e)=>setFilter(e.target.value)}>
-            <option value="all">ðŸ“‹ All types</option>
-            <option value="Full-time">â° Full-time</option>
-            <option value="Part-time">ðŸ• Part-time</option>
-            <option value="Contract">ðŸ“ Contract</option>
+            <option value="all">{"\u{1F4CB}"} All types</option>
+            <option value="Full-time">{"\u{23F0}"} Full-time</option>
+            <option value="Part-time">{"\u{1F550}"} Part-time</option>
+            <option value="Contract">{"\u{1F4DD}"} Contract</option>
           </select>
         </section>
 
@@ -58,13 +58,13 @@ export default function Home({ jobs }) {
                       <span className="job-type-badge" data-type={job.type.toLowerCase().replace('-', '')}>{job.type}</span>
                     </div>
                     <p className="meta">
-                      <span className="company-name">ðŸ¢ {job.company}</span>
+                      <span className="company-name">{"\u{1F3E2}"} {job.company}</span>
                       <span className="separator">â€¢</span>
-                      <span className="location">ðŸ“ {job.location}</span>
+                      <span className="location">{"\u{1F4CD}"} {job.location}</span>
                     </p>
                     <p className="excerpt">{job.excerpt}</p>
                     <div className="job-footer">
-                      <a href={job.applyUrl} target="_blank" rel="noreferrer" className="btn-apply">Apply Now â†’</a>
+                      <a href={job.applyUrl} target="_blank" rel="noreferrer" className="btn-apply">Apply Now {"\u{2192}"}</a>
                     </div>
                   </li>
                 ))}
@@ -75,7 +75,7 @@ export default function Home({ jobs }) {
       </div>
 
       <footer className="footer">
-        <p>âœ¨ Built with AI â€¢ Real-time job posting â€¢ Powered by GitHub</p>
+        <p>{"\u{2728}"} Built with AI â€¢ Real-time job posting â€¢ Powered by GitHub</p>
       </footer>
 
       <style jsx>{`
