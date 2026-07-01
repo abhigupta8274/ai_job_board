@@ -10,6 +10,17 @@ export default function Post() {
   const [status, setStatus] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  function saveLocalJob(job) {
+    if (typeof window === 'undefined') return
+    try {
+      const existing = JSON.parse(window.localStorage.getItem('postedJobs') || '[]')
+      const updated = [job, ...existing.filter(item => item.applyUrl !== job.applyUrl)]
+      window.localStorage.setItem('postedJobs', JSON.stringify(updated.slice(0, 20)))
+    } catch (err) {
+      console.error('Unable to save local job', err)
+    }
+  }
+
   async function submit(e){
     e.preventDefault()
     setIsSubmitting(true)
@@ -21,8 +32,18 @@ export default function Post() {
         body: JSON.stringify({ title, company, location, type, applyUrl })
       })
       const data = await res.json()
+      const savedJob = {
+        id: `local-${Date.now()}`,
+        title,
+        company,
+        location,
+        type,
+        excerpt: `Apply at ${applyUrl}`,
+        applyUrl
+      }
+      saveLocalJob(savedJob)
       if(res.ok) {
-        setStatus({ type: 'success', message: 'Job posted successfully! ðŸŽ‰' })
+        setStatus({ type: 'success', message: data?.message === 'demo-mode' ? 'Job saved locally in demo mode.' : 'Job posted successfully! ðŸŽ‰' })
         setTitle(''); setCompany(''); setLocation('Remote'); setType('Full-time'); setApplyUrl('')
         setTimeout(() => setStatus(null), 3000)
       } else {
@@ -144,14 +165,19 @@ export default function Post() {
       <style jsx>{`
         * { box-sizing: border-box; }
         .page { min-height: 100vh; display: flex; flex-direction: column; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #1f4b72 0%, #0f3052 100%); color: white; padding: 60px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.14); }
         .header-content { max-width: 700px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 30px; }
         .header h1 { margin: 0; font-size: 2.5em; font-weight: 700; }
         .subtitle { margin: 8px 0 0 0; font-size: 1.1em; opacity: 0.95; }
-        .btn-back { display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
-        .btn-back:hover { background: rgba(255,255,255,0.3); transform: translateX(-4px); }
+        .btn-back { display: inline-block; background: #2e5f88; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.25s ease; white-space: nowrap; }
+        .btn-back:hover { background: #1f4b72; transform: translateX(-4px); }
         .container { max-width: 700px; margin: 0 auto; padding: 0 20px; flex: 1; }
-        .form-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 40px 0; }
+        .form-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 18px rgba(15, 41, 62, 0.12); margin: 40px 0; }
+        .btn-submit { width: 100%; padding: 14px 20px; background: #0f3c60; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: 700; cursor: pointer; transition: all 0.25s ease; margin-top: 8px; }
+        .btn-submit:hover:not(:disabled) { background: #0b2f4d; transform: translateY(-1px); box-shadow: 0 8px 16px rgba(15, 41, 62, 0.18); }
+        .btn-submit:disabled { opacity: 0.75; cursor: not-allowed; }
+        .alert-success { background: #d9efdc; color: #1d512f; border: 1px solid #a7d2a5; }
+        .info-box { background: #f5f8fb; padding: 20px; border-radius: 8px; margin-top: 24px; border-left: 4px solid #1f4b72; }
         .form { }
         .form-group { margin-bottom: 24px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
