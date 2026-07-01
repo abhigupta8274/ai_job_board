@@ -163,5 +163,5 @@ export async function getServerSideProps(){
     }
   }
 
-  return { props: { jobs }, revalidate: 10 }
+  return { props: { jobs } }
 }
