@@ -1,17 +1,17 @@
 {
-    "private":  true,
-    "name":  "ai-job-board",
-    "version":  "1.0.0",
-    "dependencies":  {
-                         "react":  "^18.2.0",
-                         "react-dom":  "^18.2.0",
-                         "next":  "^13.5.8"
-                     },
-    "scripts":  {
-                    "prepare":  "",
-                    "lint":  "echo \u0027No linter configured\u0027",
-                    "build":  "next build",
-                    "dev":  "next dev",
-                    "start":  "next start"
-                }
+  "name": "ai-job-board",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "echo 'No linter configured'",
+    "prepare": ""
+  },
+  "dependencies": {
+    "next": "^13.5.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
