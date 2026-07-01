@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Senior Frontend Engineer",
+    "company": "GlobalCo",
+    "location": "Remote",
+    "type": "Full-time",
+    "excerpt": "Build delightful user experiences using React and modern CSS.",
+    "applyUrl": "https://example.com/apply/frontend"
+  },
+  {
+    "id": 2,
+    "title": "Product Designer",
+    "company": "DesignHub",
+    "location": "Berlin, Germany",
+    "type": "Contract",
+    "excerpt": "Design high-fidelity flows and prototypes for mobile and web.",
+    "applyUrl": "https://example.com/apply/designer"
+  },
+  {
+    "id": 3,
+    "title": "Data Scientist",
+    "company": "AI Labs",
+    "location": "San Francisco, CA",
+    "type": "Part-time",
+    "excerpt": "Work on ML models and deploy production pipelines.",
+    "applyUrl": "https://example.com/apply/data"
+  }
+]

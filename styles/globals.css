@@ -1,0 +1,4 @@
+:root{--bg:#fff;--muted:#666}
+html,body,#__next{height:100%}
+body{margin:0;background:var(--bg);color:#111}
+a{color:inherit}
